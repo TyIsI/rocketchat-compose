@@ -9,4 +9,4 @@ services:
       - traefik.http.routers.rocketchat.entryPoint=${ENTRYPOINT:-http,https}
       - traefik.http.routers.rocketchat.service=svc-rocketchat
       - traefik.http.routers.rocketchat.tls.enable=true
-      - traefik.http.routers.rocketchat.tls.certResolver=le
+      - traefik.http.routers.rocketchat.tls.certResolver=${LETSENCRYPT_PROVIDER:-le}
