@@ -1,12 +1,12 @@
 services:
-    loki:
-        command: -config.file=/etc/loki/config.yaml -config.expand-env=true
-        image: docker.io/grafana/loki:3.6
-        labels:
-            container_tag: ${COMPOSE_PROJECT_NAME:-rocketchat}#loki
-        logging:
-            driver: json-file
-        user: "0"
-        volumes:
-            - ./files/loki/config.yaml:/etc/loki/config.yaml:z
-            - loki_data:/data/loki:rw
+  loki:
+    command: -config.file=/etc/loki/config.yaml -config.expand-env=true
+    image: docker.io/grafana/loki:3.6
+    labels:
+      container_tag: ${COMPOSE_PROJECT_NAME:-rocketchat}#loki
+    logging:
+      driver: json-file
+    user: "0"
+    volumes:
+      - ./files/loki/config.yaml:/etc/loki/config.yaml:z
+      - loki_data:/data/loki:rw

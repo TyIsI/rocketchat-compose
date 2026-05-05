@@ -151,5 +151,5 @@ services:
 
 volumes:
   # this is for ssl shennanigans, users usually won't need to bother with it
-  traefik_ssl: {driver: local}
-  traefik_config: {driver: local}
+  traefik_ssl: { driver: local }
+  traefik_config: { driver: local }

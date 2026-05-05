@@ -1,49 +1,49 @@
 services:
-    mongodb:
-        image: docker.io/mongodb/mongodb-community-server:${MONGODB_VERSION:-8.2}-ubi8
-        restart: always
-        # depends_on:
-        #   mongodb-fix-permission-container:
-        #     condition: service_completed_successfully
-        volumes:
-            - ${MONGODB_HOST_PATH:-mongodb_data}:/data/db:rw
-        user: "${MONGODB_USER_ID:-1001}"
-        entrypoint:
-            - sh
-            - -ec
-            - |
-              echo "=====> Waiting for /data/db to be owned by uid=$$MONGODB_USER_ID (mongodb user) ...";
-              for i in $(seq 1 60); do
-                owner="$(stat -c %u /data/db 2>/dev/null || true)";
-                if [ "$$owner" = "$$MONGODB_USER_ID" ]; then
-                  echo "=====> /data/db ownership OK ($$owner) - starting MongoDB";
-                  exec mongod --replSet "$$MONGODB_REPLICA_SET_NAME" --bind_ip_all;
-                fi;
-                echo "=====> /data/db owner is '$$owner' (expected $$MONGODB_USER_ID), retrying in 5 seconds...";
-                sleep 5;
-              done;
-              echo "=====> Giving up waiting for /data/db ownership after 5 minutes";
-              exit 1
-        environment:
-            MONGODB_USER_ID: ${MONGODB_USER_ID:-1001}
-            MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
-            MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
-            MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
-            ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
-        logging:
-            driver: "json-file"
-        labels:
-            container_tag: "${COMPOSE_PROJECT_NAME:-rocketchat}#mongodb"
-        healthcheck:
-            test:
-                - CMD
-                - mongosh
-                - "mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_PORT_NUMBER:-27017}/?directConnection=true"
-                - --eval
-                - '"db.adminCommand(''ping'')"'
-            interval: 30s
-            timeout: 10s
-            retries: 10
-            start_period: 30s
-        ports:
-            - "${MONGODB_BIND_IP:-127.0.0.1}:${MONGODB_PORT_NUMBER:-27017}:${MONGODB_PORT_NUMBER:-27017}"
+  mongodb:
+    image: docker.io/mongodb/mongodb-community-server:${MONGODB_VERSION:-8.2}-ubi8
+    restart: always
+    # depends_on:
+    #   mongodb-fix-permission-container:
+    #     condition: service_completed_successfully
+    volumes:
+      - ${MONGODB_HOST_PATH:-mongodb_data}:/data/db:rw
+    user: "${MONGODB_USER_ID:-1001}"
+    entrypoint:
+      - sh
+      - -ec
+      - |
+        echo "=====> Waiting for /data/db to be owned by uid=$$MONGODB_USER_ID (mongodb user) ...";
+        for i in $(seq 1 60); do
+          owner="$(stat -c %u /data/db 2>/dev/null || true)";
+          if [ "$$owner" = "$$MONGODB_USER_ID" ]; then
+            echo "=====> /data/db ownership OK ($$owner) - starting MongoDB";
+            exec mongod --replSet "$$MONGODB_REPLICA_SET_NAME" --bind_ip_all;
+          fi;
+          echo "=====> /data/db owner is '$$owner' (expected $$MONGODB_USER_ID), retrying in 5 seconds...";
+          sleep 5;
+        done;
+        echo "=====> Giving up waiting for /data/db ownership after 5 minutes";
+        exit 1
+    environment:
+      MONGODB_USER_ID: ${MONGODB_USER_ID:-1001}
+      MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
+      MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
+      MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
+      ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
+    logging:
+      driver: "json-file"
+    labels:
+      container_tag: "${COMPOSE_PROJECT_NAME:-rocketchat}#mongodb"
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - "mongodb://${MONGODB_ADVERTISED_HOSTNAME:-mongodb}:${MONGODB_PORT_NUMBER:-27017}/?directConnection=true"
+        - --eval
+        - '"db.adminCommand(''ping'')"'
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    ports:
+      - "${MONGODB_BIND_IP:-127.0.0.1}:${MONGODB_PORT_NUMBER:-27017}:${MONGODB_PORT_NUMBER:-27017}"
