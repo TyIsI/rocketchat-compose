@@ -70,7 +70,7 @@ services:
               service: rocketchat
               rule: Host(`{{ env "DOMAIN" }}`)
               tls:
-                certResolver: le
+                certResolver: ${LETSENCRYPT_PROVIDER:-le}
             grafana:
               entryPoints:
                 - https
@@ -82,7 +82,7 @@ services:
                 {{ end }}
               service: grafana
               tls:
-                certResolver: le
+                certResolver: ${LETSENCRYPT_PROVIDER:-le}
         EOF
 
         cat /traefik_config/services.tpl >> /traefik_config/http/dynamic.yml
@@ -116,9 +116,9 @@ services:
       - --entrypoints.metrics.address=:9096
       - --metrics.prometheus=true
       # ssl
-      - --certificatesresolvers.le.acme.tlschallenge=${LETSENCRYPT_ENABLED:-false}
-      - --certificatesresolvers.le.acme.email=${LETSENCRYPT_EMAIL?need email for cert expiry notifications}
-      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.${LETSENCRYPT_PROVIDER:-le}acme.tlschallenge=${LETSENCRYPT_ENABLED:-false}
+      - --certificatesresolvers.${LETSENCRYPT_PROVIDER:-le}acme.email=${LETSENCRYPT_EMAIL?need email for cert expiry notifications}
+      - --certificatesresolvers.${LETSENCRYPT_PROVIDER:-le}acme.storage=/letsencrypt/acme.json
       # ssl
       - --metrics.prometheus.entryPoint=metrics # Associate metrics with the 'metrics' entry point
       - --metrics.prometheus.addEntryPointsLabels=true
