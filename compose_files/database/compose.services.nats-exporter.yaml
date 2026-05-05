@@ -1,0 +1,11 @@
+services:
+    nats-exporter:
+        image: docker.io/natsio/prometheus-nats-exporter:${NATS_EXPORTER_VERSION:-0.17.3}
+        command:
+            - -healthz
+            - -varz
+            - "http://nats:8222"
+        depends_on:
+            - nats
+        expose:
+            - 7777

@@ -1,0 +1,3 @@
+volumes:
+    prometheus_tsdb:
+        driver: local

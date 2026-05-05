@@ -1,0 +1,18 @@
+services:
+    mongodb-fix-permission-container:
+        image: docker.io/mongodb/mongodb-community-server:${MONGODB_VERSION:-8.2}-ubi8
+        restart: on-failure
+        user: "0"
+        volumes:
+            - ${MONGODB_HOST_PATH:-mongodb_data}:/data/db:rw
+        environment:
+            MONGODB_USER_ID: ${MONGODB_USER_ID:-1001}
+        entrypoint: |
+            sh -xc '
+              owner="$(stat -c %u /data/db)";
+              # for fresh installs
+              if [ "$$owner" != "$$MONGODB_USER_ID" ]; then
+                echo "=====> Fixing directory ownership to uid $$MONGODB_USER_ID"
+                chown -R "$$MONGODB_USER_ID" /data/db;
+              else echo "=====> Nothing to do"; fi;
+            '

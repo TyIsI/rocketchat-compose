@@ -1,0 +1,11 @@
+services:
+    mongodb-exporter:
+        image: docker.io/percona/mongodb_exporter:${MONGODB_EXPORTER_VERSION:-0.44.0}
+        depends_on:
+            - mongodb
+        expose:
+            - 9216
+        command:
+            - --mongodb.uri=${MONGODB_URI:-mongodb://mongodb:27017}
+            - --collect-all
+            - --compatible-mode

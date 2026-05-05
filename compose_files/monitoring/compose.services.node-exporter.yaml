@@ -1,0 +1,21 @@
+services:
+    node-exporter:
+        command:
+            - --path.procfs=/host/proc
+            - --path.sysfs=/host/sys
+            - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
+        expose:
+            - 9100
+        image: docker.io/prom/node-exporter:${NODE_EXPORTER_VERSION:-v1.9.1}
+        labels:
+            container_tag: ${COMPOSE_PROJECT_NAME:-rocketchat}#node-exporter
+        logging:
+            driver: json-file
+        network_mode: host
+        pid: host
+        privileged: true
+        restart: always
+        volumes:
+            - /sys:/host/sys:ro
+            - /proc:/host/proc:ro
+            - /dev:/host/dev:ro

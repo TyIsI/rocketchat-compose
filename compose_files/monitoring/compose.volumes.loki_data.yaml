@@ -1,0 +1,3 @@
+volumes:
+    loki_data:
+        driver: local

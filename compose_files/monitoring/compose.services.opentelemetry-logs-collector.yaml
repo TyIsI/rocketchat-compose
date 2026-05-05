@@ -1,0 +1,10 @@
+services:
+    opentelemetry-logs-collector:
+        command:
+            - --config=/etc/otel-collector-config.yaml
+        image: docker.io/otel/opentelemetry-collector-contrib:0.143.0
+        logging:
+            driver: none
+        user: "0"
+        volumes:
+            - ./files/opentelemetry/config.yaml:/etc/otel-collector-config.yaml:z
