@@ -8,6 +8,7 @@
 !compose.monitoring.yml
 !compose.traefik.yml
 !compose.yaml
+!compose.sample-override.yaml
 !compose.yml
 !docker.yml
 
