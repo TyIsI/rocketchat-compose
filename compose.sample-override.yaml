@@ -1,0 +1,8 @@
+services:
+    rocketchat:
+        networks:
+            - proxy
+
+networks:
+    proxy:
+        external: true
