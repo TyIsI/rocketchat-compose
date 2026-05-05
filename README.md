@@ -39,10 +39,13 @@ For deploying the recommended stack with Rocket.Chat, Traefik, MongoDB, NATS, an
 
 1. **Configure environment variables:**
    - Copy the example environment file:
+
      ```bash
      cp .env.example .env
      ```
+
    - Edit `.env` to fit your deployment. Recommended changes - we recommend to keep other values from the example for reference.
+
      ```env
      # Rocket.Chat Cloud registration token (optional)
      REG_TOKEN=
@@ -64,13 +67,16 @@ For deploying the recommended stack with Rocket.Chat, Traefik, MongoDB, NATS, an
 2. **Using Grafana as a Path instead of Subdomain:**
 
 - Change the variables
+
   ```env
   # set this to empty
   GRAFANA_DOMAIN=
   # set this to you desired path without trailing slash
   GRAFANA_PATH=/grafana
   ```
+
 - If you wan't to use subdomain
+
   ```env
   # set this to your subdomain
   GRAFANA_DOMAIN=grafana.your-domain.com
@@ -78,8 +84,9 @@ For deploying the recommended stack with Rocket.Chat, Traefik, MongoDB, NATS, an
   GRAFANA_PATH=
   ```
 
-3. **Start the stack:**
+1. **Start the stack:**
    - With Docker Compose:
+
      ```bash
      docker compose \
        -f compose.monitoring.yml \
@@ -89,7 +96,9 @@ For deploying the recommended stack with Rocket.Chat, Traefik, MongoDB, NATS, an
        -f docker.yml \
        up -d
      ```
+
    - Or with Podman Compose (rootless, recommended):
+
      ```bash
      podman compose \
        -f compose.monitoring.yml \
@@ -99,7 +108,9 @@ For deploying the recommended stack with Rocket.Chat, Traefik, MongoDB, NATS, an
        -f podman.yml \
        up -d
      ```
+
    - If your Podman setup requires rootful mode, use:
+
      ```bash
      podman compose \
        -f compose.monitoring.yml \
@@ -117,10 +128,13 @@ This will launch all containers. Rocket.Chat will be available at [http://localh
 4. **Stop the stack:**
 
 - With Docker Compose:
+
   ```bash
   docker compose -f docker.yml --profile '*' down
   ```
+
 - Or with Podman Compose:
+
   ```bash
   podman compose \
     -f compose.monitoring.yml \
