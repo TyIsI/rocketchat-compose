@@ -2,6 +2,6 @@ services:
   grafana:
     labels:
       - traefik.http.routers.grafana.rule={{ if eq (env "GRAFANA_DOMAIN") "" }} Host(`{{ env "DOMAIN" }}`) && PathPrefix(`{{ env "GRAFANA_PATH" }}`) {{ else }} Host(`{{ env "GRAFANA_DOMAIN" }}`) {{ end }}
-      - traefik.http.routers.grafana.entryPoint=${ENTRYPOINT:-http,https}
+      - traefik.http.routers.grafana.entryPoints=${ENTRYPOINT:-http,https}
       - traefik.http.routers.grafana.tls.enable=true
       - traefik.http.routers.grafana.tls.certResolver=${LETSENCRYPT_PROVIDER:-le}
