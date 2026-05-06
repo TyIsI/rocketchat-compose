@@ -1,5 +1,5 @@
 services:
   grafana:
     labels:
-      - traefik.http.routers.grafana.rule={{ if eq (env "GRAFANA_DOMAIN") "" }} Host(`{{ env "DOMAIN" }}`) && PathPrefix(`{{ env "GRAFANA_PATH" }}`) {{ else }} Host(`{{ env "GRAFANA_DOMAIN" }}`) {{ end }}
-      - traefik.http.routers.grafana.entryPoints=${ENTRYPOINT:-http}
+      - traefik.http.routers.grafana.rule={{ if ne "${GRAFANA_DOMAIN}" "" }}Host(`{{ "${GRAFANA_DOMAIN}" }}`){{ else }}Host(`{{ "${DOMAIN}" }}`){{ end }}{{ if ne "${GRAFANA_PATH}" "" }}&& PathPrefix(`{{ "${GRAFANA_PATH}" }}`){{ end }}
+      - traefik.http.routers.grafana.entryPoints=${ENTRYPOINTS:-http}

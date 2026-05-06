@@ -5,8 +5,8 @@ services:
       - traefik.http.services.svc-rocketchat.loadBalancer.healthcheck.path=/health
       - traefik.http.services.svc-rocketchat.loadBalancer.healthcheck.interval=10s
       - traefik.http.services.svc-rocketchat.loadBalancer.healthcheck.timeout=3s
-      - traefik.http.routers.rocketchat.rule={{ if eq (env "ROCKETCHAT_DOMAIN") "" }} Host(`{{ env "DOMAIN" }}`) && PathPrefix(`{{ env "ROCKETCHAT_PATH" }}`) {{ else }} Host(`{{ env "ROCKETCHAT_DOMAIN" }}`) {{ end }}
-      - traefik.http.routers.rocketchat.entryPoints=${ENTRYPOINT:-http,https}
+      - traefik.http.routers.rocketchat.rule={{ if ne "${ROCKETCHAT_DOMAIN}" "" }}Host(`{{ "${ROCKETCHAT_DOMAIN}" }}`){{ else }}Host(`{{ "${DOMAIN}" }}`){{ end }}{{ if ne "${ROCKETCHAT_PATH}" "" }}&& PathPrefix(`{{ "${ROCKETCHAT_PATH}" }}`){{ end }}
+      - traefik.http.routers.rocketchat.entryPoints=${ENTRYPOINTS:-http,https}
       - traefik.http.routers.rocketchat.service=svc-rocketchat
       - traefik.http.routers.rocketchat.tls.enable=true
       - traefik.http.routers.rocketchat.tls.certResolver=${LETSENCRYPT_PROVIDER:-le}
