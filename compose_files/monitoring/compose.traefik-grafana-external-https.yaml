@@ -1,7 +1,7 @@
 services:
   grafana:
     labels:
-      - traefik.http.routers.grafana.rule={{ if ne "${GRAFANA_DOMAIN}" "" }}Host(`{{ "${GRAFANA_DOMAIN}" }}`){{ else }}Host(`{{ "${DOMAIN}" }}`){{ end }}{{ if ne "${GRAFANA_PATH}" "" }}&& PathPrefix(`{{ "${GRAFANA_PATH}" }}`){{ end }}
+      - traefik.http.routers.grafana.rule=Host(`{{ "${GRAFANA_DOMAIN:-${DOMAIN}}" }}`) && PathPrefix(`{{ "${GRAFANA_PATH:-/grafana}" }}`)
       - traefik.http.routers.grafana.entrypoints=${TRAEFIK_ENTRYPOINTS:-http,https}
-      - traefik.http.routers.grafana.tls.enable=true
+      - traefik.http.routers.grafana.tls=true
       - traefik.http.routers.grafana.tls.certResolver=${LETSENCRYPT_PROVIDER:-le}
