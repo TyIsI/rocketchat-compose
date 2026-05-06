@@ -5,6 +5,6 @@ services:
       - traefik.http.services.svc-rocketchat.loadBalancer.healthcheck.path=/health
       - traefik.http.services.svc-rocketchat.loadBalancer.healthcheck.interval=10s
       - traefik.http.services.svc-rocketchat.loadBalancer.healthcheck.timeout=3s
-      - traefik.http.routers.rocketchat.rule=Host(`{{ "${ROCKETCHAT_DOMAIN:-${DOMAIN}}" }}`) && PathPrefix(`{{ "${ROCKETCHAT_PATH:-/}" }}`)
+      - traefik.http.routers.rocketchat.rule=Host(`${ROCKETCHAT_DOMAIN:-${DOMAIN}}`) && PathPrefix(`${ROCKETCHAT_PATH:-/}`)
       - traefik.http.routers.rocketchat.entrypoints=${TRAEFIK_ENTRYPOINTS:-http}
       - traefik.http.routers.rocketchat.service=svc-rocketchat
